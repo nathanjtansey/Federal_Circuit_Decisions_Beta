@@ -7,34 +7,16 @@ Created on Wed Mar 22 21:40:38 2023
 
 import pandas as pd
 import streamlit as st
+from config import load_data, docket_data_link, dtype_dict_dock
 
 # read in data from dockets page (stored in session state)
 if 'df_dock' in st.session_state:
     df_dock = st.session_state['df_dock']
 # if dockets page was not run yet, will need to read in data again
 else:
-    # define function to load data
-    # st.cache_data means the data is stored and doesn't need to be read again each time the user changes a variable
-    @st.cache_data
-    def load_data(data_path, state_name):
-        '''
-        Parameters
-        ----------
-        data_path : str
-            The file path to load the data
-        state_name : str
-            The name that the DataFrame will be stored as in the session state
-
-        Returns
-        -------
-        df : DataFrame
-        '''
-        df = pd.read_csv(data_path, sep = '\t')
-        # save the data in the session_state so it can be accessed from other pages
-        st.session_state[state_name] = df
-        return df
     # read in data and display
-    df_dock = load_data('https://raw.githubusercontent.com/sdannels/Federal_Circuit_Decisions_Beta/main/Data/2022-12-31%20CAFC%20Dockets.tab', state_name = 'df_dock')
+    df_dock = load_data(docket_data_link, 
+                        state_name = 'df_dock', dtype_dict = dtype_dict_dock)
     
 # set up section for searching for case
 docket_search_section = st.container()
@@ -50,7 +32,7 @@ with docket_search_section:
         if len(search_out) > 1:
             st.error('There is more than one case matching your search criteria.' \
                      ' Please be more specific in your search. You may try using' \
-                     ' the "Filter Data" button above to search the data.', 
+                     ' the "Filter Data" button on the "Dockets Data" page to search the data.', 
                      icon="🚨")
         elif len(search_out) == 0:
             st.error('No cases match this search criteria.', 
