@@ -12,7 +12,6 @@ from pandas.api.types import (
     is_numeric_dtype,
     is_object_dtype,
 )
-
 ########### Set up documents data set ##############
 # link to document data (*should not change*)
 document_data_link = 'https://raw.githubusercontent.com/sdannels/Federal_Circuit_Decisions_Beta/main/Data/documents.tab'
