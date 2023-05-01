@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import datetime
 import plotly.express as px
+
 import geopandas as gpd
 from config import docket_data_link, document_data_link, dtype_dict_dock, dtype_dict, load_data
 
@@ -68,7 +69,9 @@ with line_section:
     
     df8 = df1.groupby(['docYear','DispGeneral']).count().reset_index()
     df8 = df8.rename(columns = {'uniqueID': 'Count'})
-    fig8 = px.bar(df8, x = 'docYear', y = 'Count', color = 'DispGeneral', title = 'Dispositions')
+    fig8 = px.bar(df8, x = 'docYear', y = 'Count', color = 'DispGeneral', title = 'Dispositions',
+                  color_discrete_sequence=px.colors.qualitative.Light24[2:])
+    fig8.update_layout(legend_traceorder="reversed")
     st.plotly_chart(fig8)
 
 
@@ -77,5 +80,6 @@ with plot_section:
     
     yearXorigin_df = df1.groupby(['docYear','origin']).count()
     yearXorigin_df = yearXorigin_df.rename(columns = {'uniqueID': 'Count'})
-    fig_yearo = px.bar(yearXorigin_df.reset_index(), x = 'docYear', y = 'Count', color = 'origin', title = 'Court Origins over Time')
+    fig_yearo = px.bar(yearXorigin_df.reset_index(), x = 'docYear', y = 'Count', color = 'origin', title = 'Court Origins over Time',
+                       color_discrete_sequence=px.colors.qualitative.Light24[2:])
     st.plotly_chart(fig_yearo)
